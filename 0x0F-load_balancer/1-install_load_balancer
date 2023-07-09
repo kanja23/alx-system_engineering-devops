@@ -26,4 +26,9 @@ apt-get -y update
 apt-get -y install haproxy
 cp -a /etc/haproxy/haproxy.cfg{,.orig}
 echo "$balancer" >> /etc/haproxy/haproxy.cfg
+
+# Enable HAProxy init script
+sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
+
+# Restart HAProxy service
 service haproxy restart
