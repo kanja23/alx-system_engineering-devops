@@ -14,8 +14,23 @@ apt update
 # Install Nginx
 apt install -y nginx
 
-# Configure custom Nginx response header
-echo 'add_header X-Served-By $hostname;' | tee -a /etc/nginx/conf.d/custom_header.conf
+# Get the hostname
+hostname=$(hostname)
+
+# Create custom Nginx configuration
+cat <<EOF > /etc/nginx/conf.d/custom_header.conf
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    location / {
+        add_header X-Served-By $hostname;
+        # Your other configuration directives
+    }
+}
+EOF
 
 # Restart Nginx service
 systemctl restart nginx
