@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Update Nginx configuration
+sed -i 's/user  nginx;/user  nginx nginx;/g' /etc/nginx/nginx.conf
+
+# Create an Nginx user and group
+groupadd nginx
+useradd -g nginx nginx
+
+# Update file permissions
+chown -R nginx:nginx /var/log/nginx
+chown -R nginx:nginx /var/lib/nginx
+chown -R nginx:nginx /var/www/html
+
+# Modify Nginx default configuration
+sed -i 's/listen       80;/listen       8080;/g' /etc/nginx/conf.d/default.conf
+
+# Restart Nginx service
+service nginx restart
