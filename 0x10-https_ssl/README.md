@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+HTTPS SSL
+=======
 # HTTPS SSL
+>>>>>>> 26867c17cfc9bd07c5f10c5835202b023cd46b11
 
 In this project, I learned about the importance of HTTPS and how it works. I
 configured my HolbertonBnB web servers with `certbot` certificate and HAproxy
