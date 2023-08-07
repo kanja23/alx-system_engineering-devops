@@ -18,4 +18,5 @@ Key components of a postmortem in software engineering include:
 
 7. **Communication:** Share the findings of the postmortem report with relevant stakeholders, including technical teams, management, and potentially users or clients. Transparency in communication is essential for building trust and ensuring continuous improvement.
 
+
 Postmortems are not about assigning blame but rather about understanding the systems and processes involved to improve the overall reliability and performance of software systems. They encourage a culture of accountability, learning, and continuous improvement within software development teams.
