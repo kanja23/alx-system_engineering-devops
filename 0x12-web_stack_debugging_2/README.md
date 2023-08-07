@@ -9,7 +9,7 @@ web stack.
 ## Tasks :page_with_curl:
 
 * **0. Run software as another user**
-  * [0-iamsomeonelese](./0-iamsomeonelese): Bash script that runs the command
+  * [0-iamsomeoneelse](./0-iamsomeoneelse): Bash script that runs the command
   `whoami` under the user passed as argument.
   * Usage: `./0-iamsomeonelese <user>`
 
