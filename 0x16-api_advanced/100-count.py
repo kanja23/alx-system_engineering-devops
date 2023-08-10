@@ -3,45 +3,47 @@
 
 import requests
 
-def count_words(subreddit, word_list, after=None, word_count=None):
-    if word_count is None:
-        word_count = {}
 
-    headers = {'User-Agent': 'MyBot/1.0'}  # Set a user agent to identify your bot
+def count_words(subreddit, word_list, after='', word_dict={}):
+    """ A function that queries the Reddit API parses the title of
+    all hot articles, and prints a sorted count of given keywords
+    (case-insensitive, delimited by spaces.
+    Javascript should count as javascript, but java should not).
+    If no posts match or the subreddit is invalid, it prints nothing.
+    """
 
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
-    params = {'limit': 100, 'after': after}
-
-    response = requests.get(url, headers=headers, params=params)
-    if response.status_code != 200:
-        print("Invalid subreddit or error in retrieving data.")
-        return
-
-    data = response.json()
-    posts = data['data']['children']
-
-    for post in posts:
-        title = post['data']['title'].lower()
+    if not word_dict:
         for word in word_list:
-            if word in title and is_whole_word(title, word):
-                if word in word_count:
-                    word_count[word] += 1
-                else:
-                    word_count[word] = 1
+            if word.lower() not in word_dict:
+                word_dict[word.lower()] = 0
 
-    after = data['data']['after']
+    if after is None:
+        wordict = sorted(word_dict.items(), key=lambda x: (-x[1], x[0]))
+        for word in wordict:
+            if word[1]:
+                print('{}: {}'.format(word[0], word[1]))
+        return None
 
-    if after is not None:
-        return count_words(subreddit, word_list, after, word_count)
-    else:
-        sorted_word_count = sorted(word_count.items(), key=lambda x: (-x[1], x[0]))
-        for word, count in sorted_word_count:
-            print(f'{word}: {count}')
+    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
+    header = {'user-agent': 'redquery'}
+    parameters = {'limit': 100, 'after': after}
+    response = requests.get(url, headers=header, params=parameters,
+                            allow_redirects=False)
 
-def is_whole_word(text, word):
-    return f' {word} ' in f' {text} '
+    if response.status_code != 200:
+        return None
 
-# Example usage
-subreddit_name = 'python'
-keywords = ['python', 'programming', 'tutorial', 'code']
-count_words(subreddit_name, keywords)
+    try:
+        hot = response.json()['data']['children']
+        aft = response.json()['data']['after']
+        for post in hot:
+            title = post['data']['title']
+            lower = [word.lower() for word in title.split(' ')]
+
+            for word in word_dict.keys():
+                word_dict[word] += lower.count(word)
+
+    except Exception:
+        return None
+
+    count_words(subreddit, word_list, aft, word_dict)
