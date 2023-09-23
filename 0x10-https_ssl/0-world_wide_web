@@ -1,23 +1,16 @@
 #!/usr/bin/env bash
+# Takes a subdomain and a domain and returns information about the subdomain
 
-domain=$1
-subdomain=$2
-
-# Function to display information about a subdomain
-display_subdomain_info() {
-    local sub=$1
-    local record_type=$(dig +short $sub.$domain | awk '{print $4}')
-    local destination=$(dig +short $sub.$domain)
-    echo "The subdomain $sub is a $record_type record and points to $destination"
+print_info () {
+    dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" " ' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }'
 }
 
-# Check if subdomain parameter is provided
-if [ -n "$subdomain" ]; then
-    display_subdomain_info $subdomain
+if [ "$#" -eq 2 ]
+then
+    print_info "$2.$1" "$2"
 else
-    # Display information for default subdomains www, lb-01, web-01, and web-02
-    display_subdomain_info www
-    display_subdomain_info lb-01
-    display_subdomain_info web-01
-    display_subdomain_info web-02
+    print_info "www.$1" "www"
+    print_info "lb-01.$1" "lb-01"
+    print_info "web-01.$1" "web-01"
+    print_info "web-02.$1" "web-02"
 fi
