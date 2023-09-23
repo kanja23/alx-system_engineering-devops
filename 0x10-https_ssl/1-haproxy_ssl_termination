@@ -1,4 +1,5 @@
 global
+<<<<<<< HEAD
 	log /dev/log	local0
 	log /dev/log	local1 notice
 	chroot /var/lib/haproxy
@@ -49,3 +50,27 @@ backend kanja23.tech-backend
         server 189607-web-01 34.207.189.161:80 check
         server 189607-web-02 34.207.189.161:80 check
 # end of parameters
+=======
+        log /dev/log    local0
+	stats socket /run/haproxy/admin.sock mode 660 level admin
+
+defaults
+        log     global
+        mode    http
+        option  httplog
+	timeout connect  10s
+	timeout client  30s
+	timeout server  30s
+
+frontend kanja23.tech-frontend
+	bind *:80
+	bind *:443 ssl crt /etc/haproxy/certs/kanja23.tech.pem
+	http-request redirect scheme https unless { ssl_fc }
+	http-request set-header X-Forwarded-Proto https
+	default_backend kanja23.tech-backend
+
+backend kanja23.tech-backend
+	balance roundrobin
+	server 189607-web-01 34.207.189.161:80 check
+	server 189607-web-02 100.24.235.208:80 check
+>>>>>>> 3e139ba4e3a56e3217457fdef479e3653c5e50b1
