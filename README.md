@@ -37,7 +37,7 @@ This repository contains a collection of shell scripting and networking basics e
 - Design principles and components of web infrastructure, including load balancer.
 
 ## Contributors:
-- Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to submit a pull request.
+Martin Karanja
 
 ## License:
 - This repository is licensed under the [MIT License](LICENSE)
