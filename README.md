@@ -1,4 +1,4 @@
-# alx-system_engineering-devops
+# alx-system_engineering-devOps
 
 *Shell Scripting and Networking Basics*
 
